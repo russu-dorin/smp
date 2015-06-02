@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  .row
+    .col-xs-12
+      a.btn.btn-primary.btn-block(href='/posts/new') New Post
+      hr
+  .row
+    .col-xs-12
+      .panel.panel-default
+        table.table.table-striped
+          thead
+            tr
+              th Title
+              th Body
+              th Actions
+          tbody
+            - for(var i=0; i < posts.length; i++)
+              tr
+                td.col-md-2= posts[i].title
+                td.col-md-8= posts[i].body
+                td.col-md-2
+                  .btn-group
+                    a.btn.btn-primary.btn-xs(href='/posts/#{posts[i].id}') View
+                    a.btn.btn-danger.btn-xs(href='/posts/#{posts[i].id}', data-method='DELETE', data-csrf=_csrf) Delete
+
+

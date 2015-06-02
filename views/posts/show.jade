@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+
+  .row
+    .col-xs-12
+      .panel.panel-default
+        .panel-heading
+          h2= post.title
+        .panel-body
+          p= post.body
+          != cloudinary.image(post.image_id, { 'class' : 'img-responsive'})
+        .panel-footer
+          if post.scheduled
+
+          else
+            h4 Schedule
+
+            form(action='/posts/#{post.id}/schedule', method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group.btn-group(data-toggle='buttons')
+                label.btn.btn-default.active Facebook
+                  input(type='checkbox', name='post_on[facebook]', checked)
+                label.btn.btn-default.active Twitter
+                  input(type='checkbox', name='post_on[twitter]', checked)
+                label.btn.btn-default VKontakte
+                  input(type='checkbox', name='post_on[vkontakte]')
+              .form-group
+                label.control-label(for='scheduling[datetime]') Date and Time
+                input.form-control(type='datetime-local', name='scheduling[datetime]', id='scheduling_datetime')
+              .form-group
+                label.control-label(for='scheduling[target_fb_page]') FB pages
+                select.form-control(name='scheduling[target_fb_page]')
+                  each page in fb_pages
+                    option(value= page.id)= page.name
+              .form-group
+                label.control-label(for='scheduling[target_vk_page]') VK pages
+                select.form-control(name='scheduling[target_vk_page]')
+                  each page in vk_pages
+                    option(value= page.id)= page.name
+              .form-group
+                button.btn.btn.btn-primary(type='submit') Schedule Post
